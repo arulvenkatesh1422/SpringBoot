@@ -20,13 +20,13 @@ public class studentsImpl implements StudentsService {
 
 	// student creation method
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "unlikely-arg-type" })
 	@Override
 	public ResponseEntity<StudentsDto> createStudent(StudentsDto studentdto) {
 
 		StudentsDto response = new StudentsDto();
-
-		if (studentdto.getStudentId() == null) {
+		Students actualId = studentrepo.findByStudentId(studentdto.getStudentId());
+		if (actualId == null) {
 
 			Students students = new Students();
 			students.setStudentId(studentdto.getStudentId());
@@ -64,7 +64,14 @@ public class studentsImpl implements StudentsService {
 
 		StudentsDto response = new StudentsDto();
 
-		if (studentsId==null) {
+		Students actualId = studentrepo.findByStudentId(studentdto.getStudentId());
+		if (actualId == null) {
+
+			throw new ValidationException(Constant.Id_DID_Not_Macth);
+
+		}
+
+		if (studentsId == null) {
 
 			throw new ValidationException(Constant.Resource_Not_present);
 		}
